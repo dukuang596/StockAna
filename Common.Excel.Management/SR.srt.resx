@@ -1,0 +1,74 @@
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="stringSource">
+    <value>E:\Work\SEM\Excel_Client\src\Ganji.ExcelManagement\SR.strings</value>
+  </resheader>
+  <data name="ExcelError_FailedToCreateNewSheet">
+    <value>无法创建新Sheet，由于Sheet的名字太长，请重新命名。</value>
+  </data>
+  <data name="ImportAdd_Sheet_Button_Text">
+    <value>添加</value>
+  </data>
+  <data name="Import_Sheet_Button_Text">
+    <value>保存</value>
+  </data>
+  <data name="Import_Validate_Sheet_Button_Text">
+    <value>验证</value>
+  </data>
+  <data name="Import_Add_Tracking_Text">
+    <value>添加追踪</value>
+  </data>
+  <data name="Close_Sheet_Button_Text">
+    <value>关闭</value>
+  </data>
+  <data name="SelectRange_Dialog_Title">
+    <value>选择范围</value>
+  </data>
+  <data name="SelectRange_Dialog_Label">
+    <value>请从Excel中选择数据</value>
+  </data>
+  <data name="Update_Sheet_Button_Text">
+    <value>更新状态及质量度</value>
+  </data>
+  <data name="AutoEstimateBid_Sheet_Button_Text">
+    <value>自动估价</value>
+  </data>
+</root>

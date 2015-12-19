@@ -1,0 +1,11 @@
+﻿[strings]
+ExcelError_FailedToCreateNewSheet = 无法创建新Sheet，由于Sheet的名字太长，请重新命名。
+ImportAdd_Sheet_Button_Text = 添加
+Import_Sheet_Button_Text = 保存
+Import_Validate_Sheet_Button_Text = 验证
+Import_Add_Tracking_Text = 添加追踪
+Close_Sheet_Button_Text = 关闭
+SelectRange_Dialog_Title = 选择范围
+SelectRange_Dialog_Label = 请从Excel中选择数据
+Update_Sheet_Button_Text = 更新状态及质量度
+AutoEstimateBid_Sheet_Button_Text = 自动估价
