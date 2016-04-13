@@ -111,9 +111,9 @@ namespace TestExcelAddin
             {
                 header.SetValue("错误信息", 0, columnCount - 4);
             }
-
+            ///ttt
             //ExportAndImportUtils.AddFormulaColumnForEdit(header);
-            object tableRange = excelManager.BuildExportTable(sheetParameter.CurrentSheet, GetStyleViewName(VIEW_GOOGLE_CURRENTVIEW), 1, startRowIndex, header);
+            //object tableRange = excelManager.BuildExportTable(sheetParameter.CurrentSheet, GetStyleViewName(VIEW_GOOGLE_CURRENTVIEW), 1, startRowIndex, header);
 
 
             //change table header style
