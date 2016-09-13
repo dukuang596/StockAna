@@ -104,9 +104,19 @@ namespace TestRuleEngine
         private void button2_Click(object sender, EventArgs e)
         {
             //ContractSamples.StartDataServer();
+            var start = new DateTime(2016, 4, 21, 8, 30, 0);
+            var end = new DateTime(2016, 5, 20, 8, 30, 0);
+            var timeIndex = start;
+            var symbol = "wuba";
+            while (timeIndex <= end)
+            {
+                var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).GetSecondHistarySpan(symbol, timeIndex, timeIndex.AddHours(9).AddMinutes(30));
+                DataSaver.SaveData(symbol, data);
 
-            var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider","IB")).GetDailyHistoryData("aapl", new DateTime(2015, 3, 14), new DateTime(2015, 5, 14));
-             data = container.Resolve<IStockDataProvider>(new NamedParameter("provider","IB")).GetDailyHistoryData("amzn", new DateTime(2015, 4, 14), new DateTime(2015, 5, 14));
+                timeIndex =timeIndex.AddDays(1);
+            }
+            
+            // data = container.Resolve<IStockDataProvider>(new NamedParameter("provider","IB")).GetDailyHistoryData("amzn", new DateTime(2015, 4, 14), new DateTime(2015, 5, 14));
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -122,7 +132,12 @@ namespace TestRuleEngine
             }
             
             base.OnClosing(e);
-        } 
-        
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).ReqTickData("aapl", new DateTime(2015, 3, 14), new DateTime(2015, 5, 14));
+
+        }
     }
 }

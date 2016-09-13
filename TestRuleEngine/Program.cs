@@ -18,37 +18,19 @@ namespace TestRuleEngine
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-
-
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             // let's check the context here
-            var context = SynchronizationContext.Current;
-            if (context == null)
-                MessageBox.Show("No context for this thread");
-            else
-                MessageBox.Show("We got a context");
-            if (context == null)
-                MessageBox.Show("No context for this thread");
-            else
-                MessageBox.Show("We got a context");
+            //var context = SynchronizationContext.Current;
+            //if (context == null)
+            //    MessageBox.Show("No context for this thread");
+            //else
+            //    MessageBox.Show("We got a context");
+            //if (context == null)
+            //    MessageBox.Show("No context for this thread");
+            //else
+            //    MessageBox.Show("We got a context");
+
             // create a form
             Form1 form = new Form1();
-
-            // let's check it again after creating a form
-            context = SynchronizationContext.Current;
-
-            if (context == null)
-                MessageBox.Show("No context for this thread");
-            else
-                MessageBox.Show("We got a context");
-
-            if (context == null)
-                MessageBox.Show("No context for this thread");
-
-
 
             Application.Run(new Form1());
         }

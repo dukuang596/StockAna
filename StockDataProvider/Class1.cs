@@ -17,7 +17,9 @@ namespace Stock.DataProvider
         [EnumDescription("6 M")]
         HalfYear = 180,
         [EnumDescription("1 Y")]
-        Year = 365
+        Year = 365,
+        [EnumDescription("1800 S")]
+        HalfHour = 1800
 
     }
     public enum IBStandardHistoryBarSize
@@ -38,13 +40,13 @@ namespace Stock.DataProvider
         Min2 = 202,
         [EnumDescription("1 min")]
         Min1 = 201,
-        [EnumDescription("30 sec")]
+        [EnumDescription("30 secs")]
         Sec30 = 330,
-        [EnumDescription("15 sec")]
+        [EnumDescription("15 secs")]
         Sec15 = 315,
-        [EnumDescription("5 sec")]
+        [EnumDescription("5 secs")]
         Sec05 = 305,
-        [EnumDescription("1 sec")]
+        [EnumDescription("1 secs")]
         Sec01 = 301
 
     }

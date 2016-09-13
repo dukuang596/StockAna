@@ -12,6 +12,8 @@ namespace Stock.DataProvider
         private int _nextOrderId;
         readonly Dictionary<int, List<StockHistoryData>> _reqHistoryDataDictory = new Dictionary<int, List<StockHistoryData>>();
         readonly Dictionary<int, int> _reqStatus = new Dictionary<int, int>();
+        readonly Dictionary<int, List<StockHistoryData>> _reqTickDataDictory = new Dictionary<int, List<StockHistoryData>>();
+
         public EWrapperImpl()
         {
             _clientSocket = new EClientSocket(this);
@@ -64,17 +66,18 @@ namespace Stock.DataProvider
 
         public virtual void tickPrice(int tickerId, int field, double price, int canAutoExecute) 
         {
-            Console.WriteLine("Tick Price. Ticker Id:"+tickerId+", Field: "+field+", Price: "+price+", CanAutoExecute: "+canAutoExecute+"\n");
+            Console.WriteLine("Tick Price. Ticker Id:"+tickerId+ ", TickType: " + TickType.getField(field) + ", Price: "+price+", CanAutoExecute: "+canAutoExecute+"\n");
         }
         
         public virtual void tickSize(int tickerId, int field, int size)
         {
-            Console.WriteLine("Tick Size. Ticker Id:" + tickerId + ", Field: " + field + ", Size: " + size+"\n");
+            
+            Console.WriteLine("Tick Size. Ticker Id:" + tickerId + ", TickType: " + TickType.getField(field) + ", Size: " + size+"\n");
         }
         
         public virtual void tickString(int tickerId, int tickType, string value)
         {
-            Console.WriteLine("Tick string. Ticker Id:" + tickerId + ", Type: " + tickType + ", Value: " + value+"\n");
+            Console.WriteLine("Tick string. Ticker Id:" + tickerId + ", TickType: " + TickType.getField(tickType) + ", Value: " + value+"\n");
         }
 
         public virtual void tickGeneric(int tickerId, int field, double value)
@@ -197,6 +200,8 @@ namespace Stock.DataProvider
 
         public virtual void historicalData(int reqId, string date, double open, double high, double low, double close, int volume, int count, double wap, bool hasGaps)
         {
+            Console.WriteLine("HistoricalData. " + reqId + " - Date: " + date + ", Open: " + open + ", High: " + high + ", Low: " + low + ", Close: " + close + ", Volume: " + volume + ", Count: " + count + ", WAP: " + wap + ", HasGaps: " + hasGaps + "\n");
+
             List<StockHistoryData> sp=null;
             if (_reqHistoryDataDictory.ContainsKey(reqId))
                 sp = _reqHistoryDataDictory[reqId];
@@ -204,12 +209,11 @@ namespace Stock.DataProvider
                 sp = new List<StockHistoryData>();
                 _reqHistoryDataDictory.Add(reqId, sp);
             }
-
-            sp.Add(new StockHistoryData { StartTime = DateTime.ParseExact(date,"yyyyMMdd",new DateTimeFormatInfo()), Open = open, High = high, Low = low, Close = close, Volume = volume, Count = count, Wap = wap, HasGaps = hasGaps });
+           
+            sp.Add(new StockHistoryData { Tick = UInt32.Parse(date), Open = open, High = high, Low = low, Close = close, Volume = volume, Count = count, Wap = wap, HasGaps = hasGaps });
   
 
-            Console.WriteLine("HistoricalData. "+reqId+" - Date: "+date+", Open: "+open+", High: "+high+", Low: "+low+", Close: "+close+", Volume: "+volume+", Count: "+count+", WAP: "+wap+", HasGaps: "+hasGaps+"\n");
-        }
+                   }
 
         public virtual void marketDataType(int reqId, int marketDataType)
         {
@@ -289,6 +293,7 @@ namespace Stock.DataProvider
                 if (_reqHistoryDataDictory.ContainsKey(reqId))
                 {
                     historydata = _reqHistoryDataDictory[reqId];
+                    _reqHistoryDataDictory.Remove(reqId);
                 } 
 
               

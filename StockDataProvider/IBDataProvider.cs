@@ -8,10 +8,18 @@ using Stock.Common;
 
 namespace Stock.DataProvider
 {
+    public enum DataRequestType
+    {
+        HISTORYBAR,
+        TICKSNAPSHOT,
+        RTVOLUME
+    }
+
     public class IBDataProvider : IStockDataProvider
     {
         internal class DataTask
         {
+            public DataRequestType DataRequestType { get; set; }
             public string StockSymbol { get; set; }
             public IBStandardHistoryDataRange Range { get; set; }
             public IBStandardHistoryBarSize BarSize { get; set; }
@@ -56,10 +64,22 @@ namespace Stock.DataProvider
                     DataTask dtask;
                     if (_tq.TryDequeue(out dtask))
                     {
-                        _testImpl.ClientSocket.reqHistoricalData(dtask.ReqId, GetUsStock(dtask.StockSymbol)
-                            , dtask.EndDate.ToString("yyyyMMdd HH:mm:ss")
-                            , EnumDescriptionAttribute.GetEnumDescription(dtask.Range),
-                            EnumDescriptionAttribute.GetEnumDescription(dtask.BarSize)/* "1 day"*/, "TRADES", 1, 1, null);
+                        if (dtask.DataRequestType == DataRequestType.HISTORYBAR)
+                        {
+                            Console.WriteLine(String.Format("reqHistoricalData("+dtask.ReqId+","+dtask.StockSymbol
+                                + "," + dtask.EndDate.ToString("yyyyMMdd HH:mm:ss EST")
+                                + "," + EnumDescriptionAttribute.GetEnumDescription(dtask.Range)
+                                + "," + EnumDescriptionAttribute.GetEnumDescription(dtask.BarSize)
+                                + "," + "TRADES" + "," + 0 + "," + 2 + "," + "null)"));
+                            _testImpl.ClientSocket.reqHistoricalData(dtask.ReqId, GetUsStock(dtask.StockSymbol)
+                          , dtask.EndDate.ToString("yyyyMMdd HH:mm:ss EST")
+                          , EnumDescriptionAttribute.GetEnumDescription(dtask.Range),
+                          EnumDescriptionAttribute.GetEnumDescription(dtask.BarSize)/* "1 day"*/, "TRADES", 0, 2, null);
+                        }
+                      
+                        else if(dtask.DataRequestType == DataRequestType.TICKSNAPSHOT)
+                            _testImpl.ClientSocket.reqMktData(dtask.ReqId, GetUsStock(dtask.StockSymbol),"233",false,null);
+
                     }
                     // ib grateway limitation
                     Thread.Sleep((int)(1000 * 10.5));
@@ -74,6 +94,41 @@ namespace Stock.DataProvider
             _testImpl.ClientSocket.eConnect("127.0.0.1", 7496, 0, false);
 
         }
+
+        public  int ReqTickData(string stockSymol, DateTime startDate, DateTime enddate,
+            bool fewRequest = true)
+        {
+            int reqid = GetNextSessionId();
+
+            _tq.Enqueue(new DataTask()
+            {
+                DataRequestType = DataRequestType.TICKSNAPSHOT,
+                StockSymbol = stockSymol,
+                ReqId = reqid
+            });
+            return reqid;
+
+        }
+        public IEnumerable<StockHistoryData> GetSecondHistarySpan(string stockSymol, DateTime start,DateTime enddate)
+        {
+            var result=new List<StockHistoryData>();
+            DateTime off = enddate;
+            while(off >= start)
+            {
+                var b = GetSecondHistaryData(stockSymol, off);
+                if(b!=null&&b.Count()>0)
+                    result.AddRange(b);
+                off =off.AddMinutes(-30);
+               
+            }
+            return result;
+        }
+        IEnumerable<StockHistoryData> GetSecondHistaryData(string stockSymol, DateTime enddate)
+        {
+            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, IBStandardHistoryDataRange.HalfHour,
+                IBStandardHistoryBarSize.Sec01));
+        }
+
         public  IEnumerable<StockHistoryData> GetDailyHistoryData(string stockSymol, DateTime startDate, DateTime enddate, bool fewRequest = true)
         {
             //yyyy-MM-dd 23:59:59 :get trade  data
@@ -81,7 +136,7 @@ namespace Stock.DataProvider
             enddate = enddate.AddHours(23 - enddate.Hour).AddMinutes(59 - enddate.Minute).AddSeconds(59 - enddate.Second);//=enddate.Hour
 
             if (!fewRequest)
-                GetUsDailyHistoryData(stockSymol, startDate, enddate);
+                GetUsHistoryData(stockSymol, startDate, enddate);
 
             List<StockHistoryData> result = new List<StockHistoryData>();
             if (enddate.AddYears(-1).AddDays(1) > startDate)
@@ -119,38 +174,38 @@ namespace Stock.DataProvider
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.Day, IBStandardHistoryBarSize.Day));
             }
-            return result.Where(o => o.StartTime >= startDate && o.StartTime <= enddate).ToList();
+            return result.ToList();
 
         }
 
-        IEnumerable<StockHistoryData> GetUsDailyHistoryData(string stockSymol, DateTime startDate, DateTime enddate)
+        IEnumerable<StockHistoryData> GetUsHistoryData(string stockSymol, DateTime startDate, DateTime enddate)
         {
 
             List<StockHistoryData> result = new List<StockHistoryData>();
             if (enddate.AddYears(-1).AddDays(1) > startDate)
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.Year, IBStandardHistoryBarSize.Day));
-                result.AddRange(GetUsDailyHistoryData(stockSymol, startDate, enddate.AddYears(-1)));
+                result.AddRange(GetUsHistoryData(stockSymol, startDate, enddate.AddYears(-1)));
             }
             else if (enddate.AddMonths(-6).AddDays(1) > startDate)
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.HalfYear, IBStandardHistoryBarSize.Day));
-                result.AddRange(GetUsDailyHistoryData(stockSymol, startDate, enddate.AddMonths(-6)));
+                result.AddRange(GetUsHistoryData(stockSymol, startDate, enddate.AddMonths(-6)));
             }
             else if (enddate.AddMonths(-3).AddDays(1) > startDate)
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.Quater, IBStandardHistoryBarSize.Day));
-                result.AddRange(GetUsDailyHistoryData(stockSymol, startDate, enddate.AddMonths(-3)));
+                result.AddRange(GetUsHistoryData(stockSymol, startDate, enddate.AddMonths(-3)));
             }
             else if (enddate.AddMonths(-1).AddDays(1) > startDate)
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.Month, IBStandardHistoryBarSize.Day));
-                result.AddRange(GetUsDailyHistoryData(stockSymol, startDate, enddate.AddMonths(-1)));
+                result.AddRange(GetUsHistoryData(stockSymol, startDate, enddate.AddMonths(-1)));
             }
             else if (enddate.AddDays(-7).AddDays(1) > startDate)
             {
                 result.AddRange(GetDailyData(stockSymol, enddate, IBStandardHistoryDataRange.Week, IBStandardHistoryBarSize.Day));
-                result.AddRange(GetUsDailyHistoryData(stockSymol, startDate, enddate.AddDays(-7)));
+                result.AddRange(GetUsHistoryData(stockSymol, startDate, enddate.AddDays(-7)));
             }
             else// if (enddate.AddDays(-1) > startDate)
             {
@@ -171,10 +226,10 @@ namespace Stock.DataProvider
         private  IEnumerable<StockHistoryData> GetDailyData(string stockSymol, DateTime enddate,
             IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
         {
-            return GetUsDailyHistoryData(RequestDailyHistoryDataDaily(stockSymol, enddate, range, barsize));
+            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, range, barsize));
         }
 
-        IEnumerable<StockHistoryData> GetUsDailyHistoryData(int reqid)
+        IEnumerable<StockHistoryData> GetUsHistoryData(int reqid)
         {
             IEnumerable<StockHistoryData> result = new List<StockHistoryData>();
             while (!_testImpl.GetHistoryData(reqid, out result))
@@ -185,7 +240,7 @@ namespace Stock.DataProvider
             return result;
         }
 
-        int RequestDailyHistoryDataDaily(string stockSymol, DateTime enddate, IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
+        int RequestHistoryDataDaily(string stockSymol, DateTime enddate, IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
         {
 
             //IEnumerable<StockHistoryData> result=new List<StockHistoryData>();
@@ -193,6 +248,7 @@ namespace Stock.DataProvider
 
             _tq.Enqueue(new DataTask()
             {
+                DataRequestType = DataRequestType.HISTORYBAR,
                 StockSymbol = stockSymol,
                 EndDate = enddate,
                 Range = range,
