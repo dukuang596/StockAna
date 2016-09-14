@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,5 +36,41 @@ namespace Stock.DataProvider
             return time;
         }
 
+        static  readonly TimeZoneInfo utcZone = TimeZoneInfo.FindSystemTimeZoneById("UTC");
+        static readonly TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+        public static DateTime ConvertFromUtcIntToEst(uint utcInt)
+        {
+            return ConvertDateTimeFromUTC2EST(ConvertIntDateTime(utcInt, utcZone));
+        }
+
+        public static DateTime ConvertDateTimeFromEST2UTC(DateTime dt)
+        {
+            //TimeZoneInfo source = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+           return  ConvertDateTimeToUtc(dt, "US Eastern Standard Time");
+        }
+        public static DateTime ConvertDateTimeFromUTC2EST(DateTime dt)
+        {
+            //TimeZoneInfo source = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+            return ConvertDateTimeFromUtc(dt, "US Eastern Standard Time");
+        }
+        public static DateTime ConvertDateTimeToUtc(DateTime dt, string source)
+        {
+            var timeZoneSource = TimeZoneInfo.FindSystemTimeZoneById(source);
+            var timeZoneDestination = TimeZoneInfo.FindSystemTimeZoneById("UTC");       
+            return TimeZoneInfo.ConvertTime(dt, timeZoneSource, timeZoneDestination);
+        }
+        public static DateTime ConvertDateTimeFromUtc(DateTime dt, string targe)
+        {
+            var timeZoneSource = TimeZoneInfo.FindSystemTimeZoneById("UTC");
+            var timeZoneDestination = TimeZoneInfo.FindSystemTimeZoneById(targe);
+            return TimeZoneInfo.ConvertTime(dt, timeZoneSource, timeZoneDestination);
+        }
+
+        public static DateTime ConvertDateTimeZone(DateTime dt, String source, String targe)
+        {
+            var timeZoneSource = TimeZoneInfo.FindSystemTimeZoneById(source);
+            var timeZoneDestination = TimeZoneInfo.FindSystemTimeZoneById(targe);
+            return TimeZoneInfo.ConvertTime(dt, timeZoneSource, timeZoneDestination);
+        }
     }
 }

@@ -139,5 +139,12 @@ namespace TestRuleEngine
             var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).ReqTickData("aapl", new DateTime(2015, 3, 14), new DateTime(2015, 5, 14));
 
         }
+
+        private void BtTimezone_Click(object sender, EventArgs e)
+        {
+            var est = Util.ConvertFromUtcIntToEst(1461245278);
+            //var est=Util.ConvertDateTimeFromUTC2EST(Util.ConvertIntDateTime(1461245278, TimeZoneInfo.FindSystemTimeZoneById("UTC"))) ;
+            Console.WriteLine(est);
+        }
     }
 }
