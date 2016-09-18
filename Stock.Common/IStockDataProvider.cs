@@ -8,6 +8,7 @@ namespace Stock.Common
 {
     public interface IStockDataProvider
     {
+        IEnumerable<StockHistoryData> GetMinuteHistarySpan(string stockSymol, DateTime startDate, DateTime enddate);
         IEnumerable<StockHistoryData> GetSecondHistarySpan(string stockSymol, DateTime startDate, DateTime enddate);
         IEnumerable<StockHistoryData> GetDailyHistoryData(string stockSymol, DateTime startDate, DateTime enddate,
             bool fewRequest = true);

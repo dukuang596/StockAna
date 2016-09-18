@@ -104,14 +104,14 @@ namespace TestRuleEngine
         private void button2_Click(object sender, EventArgs e)
         {
             //ContractSamples.StartDataServer();
-            var start = new DateTime(2016, 4, 21, 8, 30, 0);
-            var end = new DateTime(2016, 5, 20, 8, 30, 0);
+            var start = new DateTime(2016, 1, 1, 8, 30, 0);
+            var end = new DateTime(2016, 9, 15, 8, 30, 0);
             var timeIndex = start;
-            var symbol = "wuba";
+            var symbol = "baba";
             while (timeIndex <= end)
             {
-                var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).GetSecondHistarySpan(symbol, timeIndex, timeIndex.AddHours(9).AddMinutes(30));
-                DataSaver.SaveData(symbol, data);
+                var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).GetMinuteHistarySpan(symbol, timeIndex, timeIndex.AddHours(10));
+                DataSaver.SaveMinuteData(symbol, data);
 
                 timeIndex =timeIndex.AddDays(1);
             }

@@ -130,6 +130,33 @@ namespace Stock.DataProvider
             }
             return result;
         }
+        public IEnumerable<StockHistoryData> GetMinuteHistarySpan(string stockSymol, DateTime start, DateTime enddate)
+        {
+            var result = new List<StockHistoryData>();
+            DateTime off = enddate;
+            while (off >= start)
+            {
+                //stock market time
+                if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    var b = GetMinuteHistaryData(stockSymol, off);
+                    if (b != null && b.Count() > 0)
+                    {
+                        var one = b.FirstOrDefault();
+                        if (Util.ConvertFromUtcIntToEst(one.Tick).DayOfYear == off.DayOfYear)
+                            result.AddRange(b);
+                    }
+                }
+                off = off.AddDays(-1);
+            }
+            return result;
+        }
+        IEnumerable<StockHistoryData> GetMinuteHistaryData(string stockSymol, DateTime enddate)
+        {
+            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, IBStandardHistoryDataRange.Day,
+                IBStandardHistoryBarSize.Min1));
+        }
+
         IEnumerable<StockHistoryData> GetSecondHistaryData(string stockSymol, DateTime enddate)
         {
             return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, IBStandardHistoryDataRange.HalfHour,

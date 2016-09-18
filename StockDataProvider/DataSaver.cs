@@ -46,7 +46,7 @@ namespace Stock.DataProvider
         private static Dictionary<string,string>  history_second_fields =new Dictionary<string, string>();
 
         static TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
-        public static int SaveData(String Symbol, IEnumerable<StockHistoryData> stockData)
+        public static int SaveSecondData(String Symbol, IEnumerable<StockHistoryData> stockData)
         {
             var dlist = stockData
                 .Where(obj=>obj.Volume>0)//get volume>0
@@ -81,7 +81,41 @@ namespace Stock.DataProvider
             return index;
 
         }
+        public static int SaveMinuteData(String Symbol, IEnumerable<StockHistoryData> stockData)
+        {
+            var dlist = stockData
+                .Where(obj => obj.Volume > 0)//get volume>0
+                .Select(obj => new stock_history_min_bar()
+                {
+                    symbol = Symbol,
+                    close = (decimal)obj.Close,
+                    open = (decimal)obj.Open,
+                    wap = (decimal)obj.Wap,
+                    high = (decimal)obj.High,
+                    low = (decimal)obj.Low,
+                    volume = obj.Volume,
+                    count = obj.Count,
+                    hasgap = obj.HasGaps ? 1 : 0,
+                    tick = (uint)obj.Tick//(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
 
+                }).ToList();
+            var index = 0;
+            while (dlist.Count > 0)
+            {
+                if (dlist.Count >= 200)
+                {
+                    stockDB.GetInstance().BatchInsert(dlist.GetRange(0, 200));
+                    dlist.RemoveRange(0, 200);
+                }
+                else
+                {
+                    stockDB.GetInstance().BatchInsert(dlist);
+                    dlist.Clear();
+                }
+            }
+            return index;
+
+        }
         //public static int SaveDataToFile(String Symbol,List<StockHistoryData> stockData,string fileName)
         //{
         //    StreamWriter sw = File.CreateText(fileName);

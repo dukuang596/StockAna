@@ -28,15 +28,17 @@ namespace Stock.DataProvider
         Day = 1,
         [EnumDescription("1 hour")]
         Hour = 12,
-        [EnumDescription("30 min")]
+        [EnumDescription("30 mins")]
         Min30 = 230,
-        [EnumDescription("15 min")]
+        [EnumDescription("15 mins")]
         Min15 = 215,
-        [EnumDescription("5 min")]
+        [EnumDescription("10 mins")]
+        Min10 = 210,
+        [EnumDescription("5 mins")]
         Min5 = 205,
-        [EnumDescription("3 min")]
+        [EnumDescription("3 mins")]
         Min3 = 203,
-        [EnumDescription("2 min")]
+        [EnumDescription("2 mins")]
         Min2 = 202,
         [EnumDescription("1 min")]
         Min1 = 201,
