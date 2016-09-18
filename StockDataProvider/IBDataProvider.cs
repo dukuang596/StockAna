@@ -17,15 +17,8 @@ namespace Stock.DataProvider
 
     public class IBDataProvider : IStockDataProvider
     {
-        internal class DataTask
-        {
-            public DataRequestType DataRequestType { get; set; }
-            public string StockSymbol { get; set; }
-            public IBStandardHistoryDataRange Range { get; set; }
-            public IBStandardHistoryBarSize BarSize { get; set; }
-            public DateTime EndDate { get; set; }
-            public int ReqId { get; set; }
-        }
+        public readonly Dictionary<int, DataTask> reqSymbolDict = new Dictionary<int, DataTask>();
+      
 
         readonly Object _lockObj = new Object();
         int _sessionid = 10000;
@@ -59,6 +52,7 @@ namespace Stock.DataProvider
 
             ThreadPool.QueueUserWorkItem(obj =>
             {
+            
                 while (true)
                 {
                     DataTask dtask;
@@ -75,11 +69,12 @@ namespace Stock.DataProvider
                           , dtask.EndDate.ToString("yyyyMMdd HH:mm:ss EST")
                           , EnumDescriptionAttribute.GetEnumDescription(dtask.Range),
                           EnumDescriptionAttribute.GetEnumDescription(dtask.BarSize)/* "1 day"*/, "TRADES", 0, 2, null);
+                           
                         }
                       
                         else if(dtask.DataRequestType == DataRequestType.TICKSNAPSHOT)
                             _testImpl.ClientSocket.reqMktData(dtask.ReqId, GetUsStock(dtask.StockSymbol),"233",false,null);
-
+                        reqSymbolDict.Add(dtask.ReqId, dtask);
                     }
                     // ib grateway limitation
                     Thread.Sleep((int)(1000 * 10.5));
@@ -109,57 +104,89 @@ namespace Stock.DataProvider
             return reqid;
 
         }
-        public IEnumerable<StockHistoryData> GetSecondHistarySpan(string stockSymol, DateTime start,DateTime enddate)
+        public void ReqSecondHistaryData(string stockSymol, DateTime start, DateTime enddate)
         {
-            var result=new List<StockHistoryData>();         
-            DateTime off = enddate;
-            while(off >= start)
-            {
-                //stock market time
-                if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    var b = GetSecondHistaryData(stockSymol, off);
-                    if (b != null && b.Count() > 0)
-                    {
-                        var one = b.FirstOrDefault();
-                        if(Util.ConvertFromUtcIntToEst(one.Tick).DayOfYear==off.DayOfYear)
-                            result.AddRange(b);
-                    }                 
-                }               
-                off =off.AddMinutes(-30);               
-            }
-            return result;
-        }
-        public IEnumerable<StockHistoryData> GetMinuteHistarySpan(string stockSymol, DateTime start, DateTime enddate)
-        {
-            var result = new List<StockHistoryData>();
+      
             DateTime off = enddate;
             while (off >= start)
             {
                 //stock market time
                 if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    var b = GetMinuteHistaryData(stockSymol, off);
-                    if (b != null && b.Count() > 0)
-                    {
-                        var one = b.FirstOrDefault();
-                        if (Util.ConvertFromUtcIntToEst(one.Tick).DayOfYear == off.DayOfYear)
-                            result.AddRange(b);
-                    }
+                    RequestHistoryData(stockSymol, off, IBStandardHistoryDataRange.HalfHour,
+                        IBStandardHistoryBarSize.Sec01);
+                  
                 }
-                off = off.AddDays(-1);
+                off = off.AddMinutes(-30);
             }
-            return result;
         }
+        public void ReqMinuteHistaryData(string stockSymol, DateTime start, DateTime enddate)
+        {
+
+            DateTime off = enddate;
+            while (off >= start)
+            {
+                //stock market time
+                if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    RequestHistoryData(stockSymol, off, IBStandardHistoryDataRange.Day,
+                IBStandardHistoryBarSize.Min1);
+
+                }
+                off = off.AddMinutes(-30);
+            }
+        }
+        //public IEnumerable<StockHistoryData> GetSecondHistarySpan(string stockSymol, DateTime start,DateTime enddate)
+        //{
+        //    var result=new List<StockHistoryData>();         
+        //    DateTime off = enddate;
+        //    while(off >= start)
+        //    {
+        //        //stock market time
+        //        if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+        //        {
+        //            var b = GetSecondHistaryData(stockSymol, off);
+        //            if (b != null && b.Count() > 0)
+        //            {
+        //                var one = b.FirstOrDefault();
+        //                if(Util.ConvertFromUtcIntToEst(one.Tick).DayOfYear==off.DayOfYear)
+        //                    result.AddRange(b);
+        //            }                 
+        //        }               
+        //        off =off.AddMinutes(-30);               
+        //    }
+        //    return result;
+        //}
+        //public IEnumerable<StockHistoryData> GetMinuteHistarySpan(string stockSymol, DateTime start, DateTime enddate)
+        //{
+        //    var result = new List<StockHistoryData>();
+        //    DateTime off = enddate;
+        //    while (off >= start)
+        //    {
+        //        //stock market time
+        //        if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+        //        {
+        //            var b = GetMinuteHistaryData(stockSymol, off);
+        //            if (b != null && b.Count() > 0)
+        //            {
+        //                var one = b.FirstOrDefault();
+        //                if (Util.ConvertFromUtcIntToEst(one.Tick).DayOfYear == off.DayOfYear)
+        //                    result.AddRange(b);
+        //            }
+        //        }
+        //        off = off.AddDays(-1);
+        //    }
+        //    return result;
+        //}
         IEnumerable<StockHistoryData> GetMinuteHistaryData(string stockSymol, DateTime enddate)
         {
-            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, IBStandardHistoryDataRange.Day,
+            return GetUsHistoryData(RequestHistoryData(stockSymol, enddate, IBStandardHistoryDataRange.Day,
                 IBStandardHistoryBarSize.Min1));
         }
 
         IEnumerable<StockHistoryData> GetSecondHistaryData(string stockSymol, DateTime enddate)
         {
-            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, IBStandardHistoryDataRange.HalfHour,
+            return GetUsHistoryData(RequestHistoryData(stockSymol, enddate, IBStandardHistoryDataRange.HalfHour,
                 IBStandardHistoryBarSize.Sec01));
         }
 
@@ -260,7 +287,7 @@ namespace Stock.DataProvider
         private  IEnumerable<StockHistoryData> GetDailyData(string stockSymol, DateTime enddate,
             IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
         {
-            return GetUsHistoryData(RequestHistoryDataDaily(stockSymol, enddate, range, barsize));
+            return GetUsHistoryData(RequestHistoryData(stockSymol, enddate, range, barsize));
         }
 
         IEnumerable<StockHistoryData> GetUsHistoryData(int reqid)
@@ -274,7 +301,7 @@ namespace Stock.DataProvider
             return result;
         }
 
-        int RequestHistoryDataDaily(string stockSymol, DateTime enddate, IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
+        int RequestHistoryData(string stockSymol, DateTime enddate, IBStandardHistoryDataRange range, IBStandardHistoryBarSize barsize)
         {
 
             //IEnumerable<StockHistoryData> result=new List<StockHistoryData>();
@@ -289,8 +316,6 @@ namespace Stock.DataProvider
                 BarSize = barsize,
                 ReqId = reqid
             });
-
-
 
             return reqid;
 

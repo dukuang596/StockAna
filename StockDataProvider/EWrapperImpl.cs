@@ -13,12 +13,17 @@ namespace Stock.DataProvider
         readonly Dictionary<int, List<StockHistoryData>> _reqHistoryDataDictory = new Dictionary<int, List<StockHistoryData>>();
         readonly Dictionary<int, int> _reqStatus = new Dictionary<int, int>();
         readonly Dictionary<int, List<StockHistoryData>> _reqTickDataDictory = new Dictionary<int, List<StockHistoryData>>();
-
+        private IBDataProvider dp;
         public EWrapperImpl()
         {
             _clientSocket = new EClientSocket(this);
         }
-        
+        public EWrapperImpl(IBDataProvider ibpro)
+        {
+            _clientSocket = new EClientSocket(this);
+            dp = ibpro;
+        }
+
         public EClientSocket ClientSocket
         {
             get { return _clientSocket; }
@@ -200,20 +205,26 @@ namespace Stock.DataProvider
 
         public virtual void historicalData(int reqId, string date, double open, double high, double low, double close, int volume, int count, double wap, bool hasGaps)
         {
-            Console.WriteLine("HistoricalData. " + reqId + " - Date: " + date + ", Open: " + open + ", High: " + high + ", Low: " + low + ", Close: " + close + ", Volume: " + volume + ", Count: " + count + ", WAP: " + wap + ", HasGaps: " + hasGaps + "\n");
+            //Console.WriteLine("HistoricalData. " + reqId + " - Date: " + date + ", Open: " + open + ", High: " + high + ", Low: " + low + ", Close: " + close + ", Volume: " + volume + ", Count: " + count + ", WAP: " + wap + ", HasGaps: " + hasGaps + "\n");
+            if (dp.reqSymbolDict.ContainsKey(reqId))
+            {
+                var dtask = dp.reqSymbolDict[reqId];
+                uint tick = uint.Parse(date);
+                if (Util.ConvertFromUtcIntToEst(tick).DayOfYear == dtask.EndDate.DayOfYear)
+                    DataSaver.SaveHistoryData(dtask, tick, open, high, low, close, volume, count, wap, hasGaps);
 
-            List<StockHistoryData> sp=null;
-            if (_reqHistoryDataDictory.ContainsKey(reqId))
-                sp = _reqHistoryDataDictory[reqId];
-            else {
-                sp = new List<StockHistoryData>();
-                _reqHistoryDataDictory.Add(reqId, sp);
             }
-           
-            sp.Add(new StockHistoryData { Tick = UInt32.Parse(date), Open = open, High = high, Low = low, Close = close, Volume = volume, Count = count, Wap = wap, HasGaps = hasGaps });
-  
+            //List<StockHistoryData> sp=null;
+            //if (_reqHistoryDataDictory.ContainsKey(reqId))
+            //    sp = _reqHistoryDataDictory[reqId];
+            //else {
+            //    sp = new List<StockHistoryData>();
+            //    _reqHistoryDataDictory.Add(reqId, sp);
+            //}
 
-                   }
+            //sp.Add(new StockHistoryData { Tick = UInt32.Parse(date), Open = open, High = high, Low = low, Close = close, Volume = volume, Count = count, Wap = wap, HasGaps = hasGaps });
+
+        }
 
         public virtual void marketDataType(int reqId, int marketDataType)
         {

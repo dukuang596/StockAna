@@ -110,8 +110,8 @@ namespace TestRuleEngine
             var symbol = "baba";
             while (timeIndex <= end)
             {
-                var data = container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).GetMinuteHistarySpan(symbol, timeIndex, timeIndex.AddHours(10));
-                DataSaver.SaveMinuteData(symbol, data);
+                 container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).ReqSecondHistaryData(symbol, timeIndex, timeIndex.AddHours(10));
+                //DataSaver.SaveMinuteData(symbol, data);
 
                 timeIndex =timeIndex.AddDays(1);
             }

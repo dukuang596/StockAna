@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DataSaver.cs" />
+    <Compile Include="DataTask.cs" />
     <Compile Include="EWrapperImpl.cs" />
     <Compile Include="IBDataProvider.cs" />
     <Compile Include="Models\Generated\Database.cs">

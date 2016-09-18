@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using stock;
@@ -81,24 +83,98 @@ namespace Stock.DataProvider
             return index;
 
         }
+
+        public static stock_history_min_bar FormatStockDataMinuteBar(String Symbol, StockHistoryData obj)
+        {
+            return new stock_history_min_bar()
+            {
+                symbol = Symbol,
+                close = (decimal) obj.Close,
+                open = (decimal) obj.Open,
+                wap = (decimal) obj.Wap,
+                high = (decimal) obj.High,
+                low = (decimal) obj.Low,
+                volume = obj.Volume,
+                count = obj.Count,
+                hasgap = obj.HasGaps ? 1 : 0,
+                tick = (uint) obj.Tick //(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
+
+            };
+        }
+        public static stock_history_second_bar FormatStockDataSecondBar(String Symbol, StockHistoryData obj)
+        {
+            return new stock_history_second_bar()
+            {
+                symbol = Symbol,
+                close = (decimal)obj.Close,
+                open = (decimal)obj.Open,
+                wap = (decimal)obj.Wap,
+                high = (decimal)obj.High,
+                low = (decimal)obj.Low,
+                volume = obj.Volume,
+                count = obj.Count,
+                hasgap = obj.HasGaps ? 1 : 0,
+                tick = (uint)obj.Tick //(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
+
+            };
+        }
+        public static stock_history_second_bar FormatStockDataSecondBar(String Symbol, uint tick, double open, double high, double low, double close,
+            int volume, int count, double wap, bool hasGaps)
+        {
+            return new stock_history_second_bar()
+            {
+                symbol = Symbol,
+                close = (decimal)close,
+                open = (decimal)open,
+                wap = (decimal)wap,
+                high = (decimal)high,
+                low = (decimal)low,
+                volume =volume,
+                count = count,
+                hasgap = hasGaps ? 1 : 0,
+                tick =tick//(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
+
+            };
+        }
+        public static stock_history_min_bar FormatStockDataMinuteBar(String Symbol, uint tick, double open, double high, double low, double close,
+            int volume, int count, double wap, bool hasGaps)
+        {
+            return new stock_history_min_bar()
+            {
+                symbol = Symbol,
+                close = (decimal)close,
+                open = (decimal)open,
+                wap = (decimal)wap,
+                high = (decimal)high,
+                low = (decimal)low,
+                volume = volume,
+                count = count,
+                hasgap = hasGaps ? 1 : 0,
+                tick = tick//(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
+
+            };
+        }
+        public static int SaveHistoryData(DataTask dtask,uint tick, double open, double high, double low, double close,
+            int volume, int count, double wap, bool hasGaps)
+        {
+            if (dtask.DataRequestType == DataRequestType.HISTORYBAR)
+            {
+                Func<string, uint, double, double, double, double, int, int, double, bool, object> func;
+                if (dtask.BarSize == IBStandardHistoryBarSize.Sec01)
+                    func = FormatStockDataSecondBar;
+                else
+                    func = FormatStockDataMinuteBar;
+                object obj=func(dtask.StockSymbol, tick, open, high, low, close, volume, count,wap, hasGaps);
+                stockDB.GetInstance().Save(obj);
+            }
+            return 0;
+        }
+
         public static int SaveMinuteData(String Symbol, IEnumerable<StockHistoryData> stockData)
         {
             var dlist = stockData
                 .Where(obj => obj.Volume > 0)//get volume>0
-                .Select(obj => new stock_history_min_bar()
-                {
-                    symbol = Symbol,
-                    close = (decimal)obj.Close,
-                    open = (decimal)obj.Open,
-                    wap = (decimal)obj.Wap,
-                    high = (decimal)obj.High,
-                    low = (decimal)obj.Low,
-                    volume = obj.Volume,
-                    count = obj.Count,
-                    hasgap = obj.HasGaps ? 1 : 0,
-                    tick = (uint)obj.Tick//(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
-
-                }).ToList();
+                .Select(obj => FormatStockDataMinuteBar(Symbol,obj)).ToList();
             var index = 0;
             while (dlist.Count > 0)
             {
