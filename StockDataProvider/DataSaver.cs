@@ -136,6 +136,24 @@ namespace Stock.DataProvider
 
             };
         }
+        public static stock_history_15second_bar FormatStockData15SecondBar(String Symbol, uint tick, double open, double high, double low, double close,
+          int volume, int count, double wap, bool hasGaps)
+        {
+            return new stock_history_15second_bar()
+            {
+                symbol = Symbol,
+                close = (decimal)close,
+                open = (decimal)open,
+                wap = (decimal)wap,
+                high = (decimal)high,
+                low = (decimal)low,
+                volume = volume,
+                count = count,
+                hasgap = hasGaps ? 1 : 0,
+                tick = tick//(uint) (Util.ConvertDateTimeInt(obj.EndTime, tzi))
+
+            };
+        }
         public static stock_history_min_bar FormatStockDataMinuteBar(String Symbol, uint tick, double open, double high, double low, double close,
             int volume, int count, double wap, bool hasGaps)
         {
@@ -162,6 +180,8 @@ namespace Stock.DataProvider
                 Func<string, uint, double, double, double, double, int, int, double, bool, object> func;
                 if (dtask.BarSize == IBStandardHistoryBarSize.Sec01)
                     func = FormatStockDataSecondBar;
+                else if (dtask.BarSize == IBStandardHistoryBarSize.Sec15)
+                    func = FormatStockData15SecondBar;
                 else
                     func = FormatStockDataMinuteBar;
                 object obj=func(dtask.StockSymbol, tick, open, high, low, close, volume, count,wap, hasGaps);

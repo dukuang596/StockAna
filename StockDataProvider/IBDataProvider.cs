@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using IBApi;
@@ -48,7 +49,7 @@ namespace Stock.DataProvider
 
         public IBDataProvider()
         {
-            _testImpl = new EWrapperImpl();
+            _testImpl = new EWrapperImpl(this);
 
             ThreadPool.QueueUserWorkItem(obj =>
             {
@@ -60,7 +61,7 @@ namespace Stock.DataProvider
                     {
                         if (dtask.DataRequestType == DataRequestType.HISTORYBAR)
                         {
-                            Console.WriteLine(String.Format("reqHistoricalData("+dtask.ReqId+","+dtask.StockSymbol
+                            Console.WriteLine(String.Format("Time:"+DateTime.Now.ToString(CultureInfo.CurrentCulture)+" call reqHistoricalData("+dtask.ReqId+","+dtask.StockSymbol
                                 + "," + dtask.EndDate.ToString("yyyyMMdd HH:mm:ss EST")
                                 + "," + EnumDescriptionAttribute.GetEnumDescription(dtask.Range)
                                 + "," + EnumDescriptionAttribute.GetEnumDescription(dtask.BarSize)
@@ -104,6 +105,27 @@ namespace Stock.DataProvider
             return reqid;
 
         }
+        public void Req15SecondHistaryData(string stockSymol, DateTime start, DateTime enddate)
+        {
+
+            DateTime off = enddate;
+            while (off >= start)
+            {
+                //stock market time
+                if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    if(off.Hour<12)
+                        RequestHistoryData(stockSymol, off, IBStandardHistoryDataRange.TwoHour,
+                        IBStandardHistoryBarSize.Sec15);
+                    else 
+                        RequestHistoryData(stockSymol, off, IBStandardHistoryDataRange.FourHour,
+                        IBStandardHistoryBarSize.Sec15);
+
+                }
+            
+                off = off.AddHours(-4);
+            }
+        }
         public void ReqSecondHistaryData(string stockSymol, DateTime start, DateTime enddate)
         {
       
@@ -133,7 +155,7 @@ namespace Stock.DataProvider
                 IBStandardHistoryBarSize.Min1);
 
                 }
-                off = off.AddMinutes(-30);
+                off = off.AddDays(-1);
             }
         }
         //public IEnumerable<StockHistoryData> GetSecondHistarySpan(string stockSymol, DateTime start,DateTime enddate)
@@ -293,11 +315,11 @@ namespace Stock.DataProvider
         IEnumerable<StockHistoryData> GetUsHistoryData(int reqid)
         {
             IEnumerable<StockHistoryData> result = new List<StockHistoryData>();
-            while (!_testImpl.GetHistoryData(reqid, out result))
-            {
-                Thread.Sleep(1000 * 5);
+            //while (!_testImpl.GetHistoryData(reqid, out result))
+            //{
+            //    Thread.Sleep(1000 * 5);
 
-            }
+            //}
             return result;
         }
 

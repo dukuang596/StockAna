@@ -34,22 +34,35 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.BtTimezone = new System.Windows.Forms.Button();
+            this.rbt_second = new System.Windows.Forms.RadioButton();
+            this.rbt_minute = new System.Windows.Forms.RadioButton();
+            this.start_date = new System.Windows.Forms.DateTimePicker();
+            this.rtbSymbols = new System.Windows.Forms.RichTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.end_date = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.rbt15second = new System.Windows.Forms.RadioButton();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(35, 260);
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(528, 300);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 29);
             this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Text = "test";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(35, 85);
+            this.button2.Location = new System.Drawing.Point(35, 407);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 29);
@@ -71,7 +84,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(35, 139);
+            this.button4.Location = new System.Drawing.Point(143, 27);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 29);
@@ -81,29 +94,133 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(172, 144);
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(528, 175);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 4;
             this.button5.Text = "GetTickData";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // BtTimezone
             // 
+            this.BtTimezone.Enabled = false;
             this.BtTimezone.Location = new System.Drawing.Point(528, 222);
             this.BtTimezone.Name = "BtTimezone";
             this.BtTimezone.Size = new System.Drawing.Size(75, 23);
             this.BtTimezone.TabIndex = 5;
             this.BtTimezone.Text = "timezone";
             this.BtTimezone.UseVisualStyleBackColor = true;
+            this.BtTimezone.Visible = false;
             this.BtTimezone.Click += new System.EventHandler(this.BtTimezone_Click);
+            // 
+            // rbt_second
+            // 
+            this.rbt_second.AutoSize = true;
+            this.rbt_second.Checked = true;
+            this.rbt_second.Location = new System.Drawing.Point(8, 35);
+            this.rbt_second.Name = "rbt_second";
+            this.rbt_second.Size = new System.Drawing.Size(76, 19);
+            this.rbt_second.TabIndex = 6;
+            this.rbt_second.TabStop = true;
+            this.rbt_second.Text = "second";
+            this.rbt_second.UseVisualStyleBackColor = true;
+            // 
+            // rbt_minute
+            // 
+            this.rbt_minute.AutoSize = true;
+            this.rbt_minute.Location = new System.Drawing.Point(181, 37);
+            this.rbt_minute.Name = "rbt_minute";
+            this.rbt_minute.Size = new System.Drawing.Size(76, 19);
+            this.rbt_minute.TabIndex = 7;
+            this.rbt_minute.Text = "minute";
+            this.rbt_minute.UseVisualStyleBackColor = true;
+            // 
+            // start_date
+            // 
+            this.start_date.CustomFormat = "yyyy-MM-dd";
+            this.start_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.start_date.Location = new System.Drawing.Point(110, 80);
+            this.start_date.Name = "start_date";
+            this.start_date.Size = new System.Drawing.Size(133, 25);
+            this.start_date.TabIndex = 8;
+            // 
+            // rtbSymbols
+            // 
+            this.rtbSymbols.Location = new System.Drawing.Point(35, 261);
+            this.rtbSymbols.Name = "rtbSymbols";
+            this.rtbSymbols.Size = new System.Drawing.Size(208, 120);
+            this.rtbSymbols.TabIndex = 9;
+            this.rtbSymbols.Text = "";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbt15second);
+            this.groupBox1.Controls.Add(this.rbt_minute);
+            this.groupBox1.Controls.Add(this.rbt_second);
+            this.groupBox1.Location = new System.Drawing.Point(35, 142);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(318, 72);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "scale";
+            // 
+            // end_date
+            // 
+            this.end_date.CustomFormat = "yyyy-MM-dd";
+            this.end_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.end_date.Location = new System.Drawing.Point(110, 116);
+            this.end_date.Name = "end_date";
+            this.end_date.Size = new System.Drawing.Size(133, 25);
+            this.end_date.TabIndex = 11;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(40, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 15);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "开始";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(40, 123);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(37, 15);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "结束";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
+            // rbt15second
+            // 
+            this.rbt15second.AutoSize = true;
+            this.rbt15second.Checked = true;
+            this.rbt15second.Location = new System.Drawing.Point(90, 37);
+            this.rbt15second.Name = "rbt15second";
+            this.rbt15second.Size = new System.Drawing.Size(92, 19);
+            this.rbt15second.TabIndex = 8;
+            this.rbt15second.TabStop = true;
+            this.rbt15second.Text = "15second";
+            this.rbt15second.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(753, 397);
+            this.ClientSize = new System.Drawing.Size(685, 496);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.end_date);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.rtbSymbols);
+            this.Controls.Add(this.start_date);
             this.Controls.Add(this.BtTimezone);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -113,7 +230,11 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -125,6 +246,16 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button BtTimezone;
+        private System.Windows.Forms.RadioButton rbt_second;
+        private System.Windows.Forms.RadioButton rbt_minute;
+        private System.Windows.Forms.DateTimePicker start_date;
+        private System.Windows.Forms.RichTextBox rtbSymbols;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DateTimePicker end_date;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.RadioButton rbt15second;
     }
 }
 

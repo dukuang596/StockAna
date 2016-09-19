@@ -19,7 +19,11 @@ namespace Stock.DataProvider
         [EnumDescription("1 Y")]
         Year = 365,
         [EnumDescription("1800 S")]
-        HalfHour = 1800
+        HalfHour = 1800,
+        [EnumDescription("14400 S")]
+        FourHour = 14400,
+                 [EnumDescription("7200 S")]
+        TwoHour = 7200
 
     }
     public enum IBStandardHistoryBarSize

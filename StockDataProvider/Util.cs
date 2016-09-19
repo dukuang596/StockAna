@@ -66,11 +66,13 @@ namespace Stock.DataProvider
             return TimeZoneInfo.ConvertTime(dt, timeZoneSource, timeZoneDestination);
         }
 
-        public static DateTime ConvertDateTimeZone(DateTime dt, String source, String targe)
+        public static DateTime ConvertDateTimeZoneByZoneId(DateTime dt, String source, String targe)
         {
             var timeZoneSource = TimeZoneInfo.FindSystemTimeZoneById(source);
+           
             var timeZoneDestination = TimeZoneInfo.FindSystemTimeZoneById(targe);
             return TimeZoneInfo.ConvertTime(dt, timeZoneSource, timeZoneDestination);
         }
+      
     }
 }
