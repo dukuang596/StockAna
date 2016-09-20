@@ -245,18 +245,20 @@ namespace Stock.DataProvider
                 uint tick = uint.Parse(date);
              
                 if (volume > 0&& Util.ConvertFromUtcIntToEst(tick).DayOfYear == dtask.EndDate.DayOfYear)
-                    try
-                    {
+                   
                         ThreadPool.QueueUserWorkItem(obj =>
                         {
-                            DataSaver.SaveHistoryData(dtask, tick, open, high, low, close, volume, count, wap, hasGaps);
+                            try
+                            {
+                                DataSaver.SaveHistoryData(dtask, tick, open, high, low, close, volume, count, wap, hasGaps);
+                            }
+                            catch (Exception)
+                            {
+
+                                Console.WriteLine("error happened @task：" + dtask.ToString());
+                            }
                         }, null);
-                    }
-                    catch (Exception)
-                    {
-                        
-                       Console.WriteLine("error happened @task："+dtask.ToString());
-                    }
+                   
                   
 
             }
