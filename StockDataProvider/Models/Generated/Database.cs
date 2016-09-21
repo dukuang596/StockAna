@@ -152,6 +152,34 @@ namespace stock
         [Column]
         public int? hasgap { get; set; }
     }
+    [TableName("stock.stock_history_5second_bar")]
+    [PrimaryKey("id")]
+    [ExplicitColumns]
+    public partial class stock_history_5second_bar : stockDB.Record<stock_history_5second_bar>
+    {
+        [Column]
+        public long id { get; set; }
+        [Column]
+        public string symbol { get; set; }
+        [Column]
+        public uint? tick { get; set; }
+        [Column]
+        public decimal? high { get; set; }
+        [Column]
+        public decimal? low { get; set; }
+        [Column]
+        public decimal? open { get; set; }
+        [Column]
+        public decimal? close { get; set; }
+        [Column]
+        public long? volume { get; set; }
+        [Column]
+        public int? count { get; set; }
+        [Column]
+        public decimal? wap { get; set; }
+        [Column]
+        public int? hasgap { get; set; }
+    }
     [TableName("stock.stock_history_second_bar")]
 	[PrimaryKey("id")]
 	[ExplicitColumns]

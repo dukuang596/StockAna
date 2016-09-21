@@ -126,6 +126,22 @@ namespace Stock.DataProvider
                 off = off.AddHours(-4);
             }
         }
+        public void Req5SecondHistaryData(string stockSymol, DateTime start, DateTime enddate)
+        {
+
+            DateTime off = enddate;
+            while (off >= start)
+            {
+                //stock market time
+                if (off.DayOfWeek != DayOfWeek.Saturday && off.DayOfWeek != DayOfWeek.Sunday)
+                {                  
+                        RequestHistoryData(stockSymol, off, IBStandardHistoryDataRange.TwoHour,
+                        IBStandardHistoryBarSize.Sec05);           
+                }
+
+                off = off.AddHours(-2);
+            }
+        }
         public void ReqSecondHistaryData(string stockSymol, DateTime start, DateTime enddate)
         {
       

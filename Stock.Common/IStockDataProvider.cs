@@ -9,6 +9,7 @@ namespace Stock.Common
     public interface IStockDataProvider
     {
         void Req15SecondHistaryData(string stockSymol, DateTime start, DateTime enddate);
+        void Req5SecondHistaryData(string stockSymol, DateTime start, DateTime enddate);
         void ReqSecondHistaryData(string stockSymol, DateTime start, DateTime enddate);
         void ReqMinuteHistaryData(string stockSymol, DateTime start, DateTime enddate);
 

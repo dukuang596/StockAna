@@ -39,11 +39,12 @@
             this.start_date = new System.Windows.Forms.DateTimePicker();
             this.rtbSymbols = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbt15second = new System.Windows.Forms.RadioButton();
             this.end_date = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.rbt15second = new System.Windows.Forms.RadioButton();
+            this.rbt5second = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,7 +132,7 @@
             // rbt_minute
             // 
             this.rbt_minute.AutoSize = true;
-            this.rbt_minute.Location = new System.Drawing.Point(181, 37);
+            this.rbt_minute.Location = new System.Drawing.Point(106, 78);
             this.rbt_minute.Name = "rbt_minute";
             this.rbt_minute.Size = new System.Drawing.Size(76, 19);
             this.rbt_minute.TabIndex = 7;
@@ -157,15 +158,28 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbt5second);
             this.groupBox1.Controls.Add(this.rbt15second);
             this.groupBox1.Controls.Add(this.rbt_minute);
             this.groupBox1.Controls.Add(this.rbt_second);
             this.groupBox1.Location = new System.Drawing.Point(35, 142);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(318, 72);
+            this.groupBox1.Size = new System.Drawing.Size(323, 103);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "scale";
+            // 
+            // rbt15second
+            // 
+            this.rbt15second.AutoSize = true;
+            this.rbt15second.Checked = true;
+            this.rbt15second.Location = new System.Drawing.Point(8, 78);
+            this.rbt15second.Name = "rbt15second";
+            this.rbt15second.Size = new System.Drawing.Size(92, 19);
+            this.rbt15second.TabIndex = 8;
+            this.rbt15second.TabStop = true;
+            this.rbt15second.Text = "15second";
+            this.rbt15second.UseVisualStyleBackColor = true;
             // 
             // end_date
             // 
@@ -198,17 +212,17 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // rbt15second
+            // rbt5second
             // 
-            this.rbt15second.AutoSize = true;
-            this.rbt15second.Checked = true;
-            this.rbt15second.Location = new System.Drawing.Point(90, 37);
-            this.rbt15second.Name = "rbt15second";
-            this.rbt15second.Size = new System.Drawing.Size(92, 19);
-            this.rbt15second.TabIndex = 8;
-            this.rbt15second.TabStop = true;
-            this.rbt15second.Text = "15second";
-            this.rbt15second.UseVisualStyleBackColor = true;
+            this.rbt5second.AutoSize = true;
+            this.rbt5second.Checked = true;
+            this.rbt5second.Location = new System.Drawing.Point(106, 37);
+            this.rbt5second.Name = "rbt5second";
+            this.rbt5second.Size = new System.Drawing.Size(84, 19);
+            this.rbt5second.TabIndex = 9;
+            this.rbt5second.TabStop = true;
+            this.rbt5second.Text = "5second";
+            this.rbt5second.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -256,6 +270,7 @@
         private System.Windows.Forms.Label label2;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.RadioButton rbt15second;
+        private System.Windows.Forms.RadioButton rbt5second;
     }
 }
 

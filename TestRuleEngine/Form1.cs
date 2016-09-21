@@ -129,7 +129,7 @@ namespace TestRuleEngine
             {
                 StartDay = new DateTime(start_date.Value.Year, start_date.Value.Month, start_date.Value.Day, 8, 30, 0),
                 EndDay = new DateTime(end_date.Value.Year, end_date.Value.Month, end_date.Value.Day, 8, 30, 0),
-                Scale = rbt_minute.Checked?1:(rbt15second.Checked?2:0),
+                Scale = rbt_minute.Checked?1:(rbt15second.Checked?2:(rbt5second.Checked?3:0)),
                 Symbols = rtbSymbols.Text.Split(new char[] { ControlChars.Cr, ControlChars.Lf }, StringSplitOptions.RemoveEmptyEntries)
             };
             backgroundWorker1.RunWorkerAsync(dwp);
@@ -190,6 +190,8 @@ namespace TestRuleEngine
                         container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).ReqMinuteHistaryData(symbol, start, start.AddHours(10));
                     else if (scale == 2)
                         container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).Req15SecondHistaryData(symbol, start, start.AddHours(10));
+                    else if (scale == 3)
+                        container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).Req5SecondHistaryData(symbol, start, start.AddHours(10));
 
                     else
                         container.Resolve<IStockDataProvider>(new NamedParameter("provider", "IB")).ReqSecondHistaryData(symbol, start, start.AddHours(10));
