@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{0DDF8800-E9E6-4E30-81B0-02643D064730}|Default">
+  <MonoDevelop.Ide.ItemProperties.web.spider PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="web.spider/MySQLHelper.cs">
+    <Files>
+      <File FileName="web.spider/Program.cs" Line="27" Column="1" />
+      <File FileName="web.spider/SecurityEntity.cs" Line="20" Column="6" />
+      <File FileName="web.spider/MySQLHelper.cs" Line="40" Column="1" />
+      <File FileName="../../.nuget/packages/mysql.data/6.9.9/Readme.txt" Line="1" Column="1" />
+      <File FileName="web.spider/app.config" Line="5" Column="26" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/zhaozhihua/Projects/web.spider/web.spider/Program.cs" relfile="web.spider/Program.cs" line="27" column="1" />
+      <Breakpoint file="/Users/zhaozhihua/Projects/web.spider/web.spider/MySQLHelper.cs" relfile="web.spider/MySQLHelper.cs" line="33" column="1" />
+      <Breakpoint file="/Users/zhaozhihua/Projects/web.spider/web.spider/MySQLHelper.cs" relfile="web.spider/MySQLHelper.cs" line="31" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

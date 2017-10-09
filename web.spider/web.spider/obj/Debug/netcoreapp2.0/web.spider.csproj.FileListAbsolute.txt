@@ -1,0 +1,12 @@
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.deps.json
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.runtimeconfig.json
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.runtimeconfig.dev.json
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.dll
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.pdb
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.csprojResolveAssemblyReference.cache
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.csproj.CoreCompileInputs.cache
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.AssemblyInfoInputs.cache
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.AssemblyInfo.cs
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.dll
+/Users/zhaozhihua/Projects/web.spider/web.spider/obj/Debug/netcoreapp2.0/web.spider.pdb
+/Users/zhaozhihua/Projects/web.spider/web.spider/bin/Debug/netcoreapp2.0/web.spider.dll.config

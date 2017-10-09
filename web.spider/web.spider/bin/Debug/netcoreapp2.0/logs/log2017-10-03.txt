@@ -1,0 +1,13 @@
+[20171003 11:13:13][4cb4ba18605b45b0bdf72cfd130081b4][Info] Build internal component...
+[20171003 11:13:13][4cb4ba18605b45b0bdf72cfd130081b4][Info] Add start urls to scheduler, count 1.
+[20171003 11:13:13][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 1 Success 0 Error 0 Total 1 Dowload 0 Extract 0 Pipeline 0
+[20171003 11:14:01][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 0 Error 0 Total 1 Dowload 626 Extract 0 Pipeline 0
+[20171003 11:14:01][4cb4ba18605b45b0bdf72cfd130081b4][Warn] Skip http://www.macrotrends.net/stocks/sector/10/computer-and-technology because extract 0 result.
+[20171003 11:14:06][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 1 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:11][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 1 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:16][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 1 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:21][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 1 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:33][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 1 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:33][4cb4ba18605b45b0bdf72cfd130081b4][Info] Waiting for monitor exit.
+[20171003 11:14:38][4cb4ba18605b45b0bdf72cfd130081b4][Trace] Left 0 Success 1 Error 0 Total 0 Dowload 626 Extract 23175 Pipeline 0
+[20171003 11:14:38][4cb4ba18605b45b0bdf72cfd130081b4][Info] Crawl complete, cost: 68.140307 seconds.
